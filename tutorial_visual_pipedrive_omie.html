@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang='pt-br'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Tutorial Visual - Pipedrive + Omie</title>
+<style>
+  :root{
+    --bg:#050505;
+    --text:#f5f5f7;
+    --muted:#b8b8c2;
+    --line:#2a2a30;
+    --accent:#ffffff;
+    --accent-soft:rgba(255,255,255,.08);
+    --shadow:0 18px 48px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    background:
+      radial-gradient(circle at top left,rgba(255,255,255,.06),transparent 28%),
+      radial-gradient(circle at right 20%,rgba(255,255,255,.04),transparent 24%),
+      linear-gradient(180deg,#000 0%,#070709 45%,#0b0b0e 100%);
+    color:var(--text);
+  }
+  .hero{
+    padding:54px 24px 34px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0));
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px 32px;}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.3fr .7fr;
+    gap:22px;
+    align-items:end;
+  }
+  .brand-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+  }
+  .brand-logo-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:240px;
+    padding:18px 22px;
+    border-radius:24px;
+    background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:var(--shadow);
+  }
+  .brand-logo{
+    display:block;
+    width:100%;
+    max-width:190px;
+    height:auto;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));
+  }
+  .eyebrow{
+    display:inline-flex;
+    padding:8px 14px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#d6d6dc;
+    background:rgba(255,255,255,.04);
+    font-size:12px;
+  }
+  .hero h1{margin:0;font-size:54px;line-height:.98;letter-spacing:-.04em;max-width:780px;}
+  .hero p{max-width:820px;font-size:17px;line-height:1.7;color:var(--muted);margin:18px 0 0;}
+  .hero-note{
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:24px;
+    padding:20px;
+    box-shadow:var(--shadow);
+  }
+  .hero-note strong{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#d6d6dc;margin-bottom:10px;}
+  .hero-note p{margin:0;font-size:15px;line-height:1.7;color:#f1f1f4;}
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px;
+    margin:28px 0 24px;
+  }
+  .box{
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);
+  }
+  .box b{display:block;color:var(--accent);margin-bottom:8px;font-size:14px;letter-spacing:.04em;text-transform:uppercase;}
+  .box span{color:var(--muted);line-height:1.65;font-size:15px;display:block;}
+  .steps{display:grid;gap:18px;}
+  .card{
+    display:grid;
+    grid-template-columns:minmax(280px,420px) 1fr;
+    gap:22px;
+    align-items:center;
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:20px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .frame{
+    padding:10px;
+    border-radius:22px;
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .card img{display:block;width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 28px rgba(0,0,0,.4);}
+  .badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#000;
+    font-weight:800;
+    padding:7px 12px;
+    border-radius:999px;
+    font-size:12px;
+    margin-bottom:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .card h2{margin:0 0 10px;color:var(--accent);font-size:28px;letter-spacing:-.03em;}
+  .card p{margin:0 0 12px;color:var(--muted);line-height:1.7;font-size:15px;}
+  .card p:last-of-type{margin-bottom:0;}
+  .card ul{
+    margin:14px 0 14px 18px;
+    padding:0;
+    color:var(--muted);
+  }
+  .card li{margin:0 0 10px;line-height:1.7;}
+  .detail{
+    display:inline-block;
+    padding:9px 12px;
+    border-radius:14px;
+    background:var(--accent-soft);
+    border:1px solid rgba(255,255,255,.08);
+    color:#f3f3f5;
+    font-size:14px;
+  }
+  .footer{
+    border-top:1px solid var(--line);
+    padding:18px 24px 28px;
+    color:#9f9fa8;
+    text-align:center;
+    font-size:14px;
+  }
+  @media print {
+    body{background:#000;}
+    .card,.box,.hero-note,.brand-logo-wrap{break-inside:avoid;box-shadow:none;}
+  }
+  @media (max-width:960px){
+    .hero-grid,.card{grid-template-columns:1fr;}
+    .hero h1{font-size:40px;}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 16px 24px;}
+    .hero{padding:34px 16px 24px;}
+    .hero h1{font-size:32px;}
+    .card h2{font-size:24px;}
+    .brand-logo-wrap{min-width:0;width:100%;}
+  }
+</style>
+</head>
+<body>
+  <header class='hero'>
+    <div class='wrap hero-grid'>
+      <div>
+        <div class='brand-row'>
+          <div class='brand-logo-wrap'>
+            <img class='brand-logo' src='https://imagecache.365scores.com/image/upload/f_png,q_auto:eco,dpr_1/v2/WebSite/logo_new' alt='Logotipo da 365 Scores'>
+          </div>
+          <div class='eyebrow'>365 Scores • Fluxo operacional</div>
+        </div>
+        <h1>Tutorial Visual de Cadastro<br>Pipedrive + Omie</h1>
+        <p>Guia visual do processo entre comercial, cadastro do cliente e fila financeira. A interface foi reorganizada em uma linguagem visual preta, com foco em leitura, contraste e navegacao rapida entre as etapas.</p>
+      </div>
+      <aside class='hero-note'>
+        <strong>Visao geral</strong>
+        <p>O fluxo parte da criacao da deal, passa pela validacao do cliente e termina na liberacao da OS dentro do Omie. Cada card abaixo combina orientacao objetiva com a captura correspondente.</p>
+      </aside>
+    </div>
+  </header>
+
+  <main class='wrap'>
+    <div class='summary'>
+      <div class='box'><b>Comercial</b><span>Abre a oportunidade, preenche dados iniciais e registra o cliente corretamente no Pipedrive.</span></div>
+      <div class='box'><b>Cadastro</b><span>Confere CUID, IDN e dados mestre para evitar duplicidade ou erro de identificacao.</span></div>
+      <div class='box'><b>Financeiro</b><span>Leva a demanda para a fila de OS, valida a criacao no Omie e prepara o faturamento.</span></div>
+    </div>
+
+    <div class='steps'>
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/1-Deals.png' alt='Tela de Deals no Pipedrive'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 1</div>
+          <h2>1. Deals</h2>
+          <p>Crie ou localize a deal correta no Pipedrive e confirme se ela realmente corresponde ao cliente e ao escopo que serao encaminhados para operacao. Esse primeiro passo precisa consolidar o contexto comercial antes de qualquer preenchimento complementar.</p>
+          <p>Nessa tela, a orientacao pratica e garantir que a oportunidade nao esteja duplicada, que o nome esteja inteligivel para as areas seguintes e que o registro tenha relacao direta com a venda ou solicitacao real em andamento.</p>
+          <ul>
+            <li>Confirme se a deal selecionada e a do cliente certo e se nao existe outro registro semelhante em andamento.</li>
+            <li>Verifique se o responsavel comercial e o pipeline correspondem ao fluxo esperado.</li>
+            <li>Use uma nomenclatura clara para facilitar a identificacao por cadastro e financeiro.</li>
+          </ul>
+          <span class='detail'>Objetivo: iniciar a oportunidade correta antes do preenchimento operacional.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/2-Preenchimento%20time%20comercial.png' alt='Preenchimento pelo time comercial'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 2</div>
+          <h2>2. Preenchimento pelo time comercial</h2>
+          <p>Complete os campos comerciais obrigatorios com o maximo de consistencia. O que for registrado aqui influencia diretamente a leitura do cadastro, a liberacao da OS e a qualidade final da integracao com o Omie.</p>
+          <p>O ideal e preencher campanha, organizacao, valor, responsavel e qualquer outro atributo usado no processo interno exatamente como o time padronizou, evitando abreviacoes improvisadas ou dados incompletos.</p>
+          <ul>
+            <li>Preencha todas as informacoes comerciais essenciais antes de avancar.</li>
+            <li>Evite deixar campos criticos para outro time interpretar depois.</li>
+            <li>Se houver duvida sobre um dado, valide com o comercial antes de encaminhar.</li>
+          </ul>
+          <span class='detail'>Atencao: padronizacao aqui reduz retrabalho nas proximas etapas.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/2.1%20-%20Preenchimento%20cliente.png' alt='Preenchimento dos dados do cliente'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 3</div>
+          <h2>3. Preenchimento do cliente</h2>
+          <p>Insira ou revise o cadastro do cliente com foco total nos dados mestres: nome, identificadores, campos obrigatorios e qualquer referencia que permita localizar esse cliente sem ambiguidade no restante do processo.</p>
+          <p>Essa etapa e sensivel porque um preenchimento incorreto pode gerar cliente duplicado, falha de correspondencia no Omie ou necessidade de ajuste manual posterior pelo financeiro.</p>
+          <ul>
+            <li>Confira se o nome do cliente esta no formato esperado internamente.</li>
+            <li>Garanta que os identificadores estejam associados ao registro certo.</li>
+            <li>Se o cliente ja existir, revise antes de sobrescrever ou criar novo cadastro.</li>
+          </ul>
+          <span class='detail'>Foco: garantir que o cliente esteja completo antes da confirmacao final.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/2.2%20-%20Confirmar%20dados%20clientes.png' alt='Confirmacao dos dados dos clientes'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 4</div>
+          <h2>4. Confirmar dados do cliente</h2>
+          <p>Antes de seguir, faça uma conferencia completa do que foi preenchido. Esse checkpoint funciona como uma barreira de qualidade para impedir que erros simples avancem para a criacao da OS.</p>
+          <p>Nao basta olhar rapidamente a tela: a confirmacao deve comparar se os dados fazem sentido entre si, se o cliente esta vinculado corretamente e se nao ha nenhum campo relevante faltando.</p>
+          <ul>
+            <li>Revise nome, organizacao, cadastro e identificadores no mesmo momento.</li>
+            <li>Confirme se o que foi digitado bate com a solicitacao original.</li>
+            <li>Somente avance quando a tela estiver coerente e pronta para o proximo time.</li>
+          </ul>
+          <span class='detail'>Checklist rapido: nome, identificadores, responsavel e dados comerciais.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/3-CUID%20e%20IDN%20aten%C3%A7%C3%A3o.png' alt='Atencao ao CUID e IDN'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 5</div>
+          <h2>5. Atencao ao CUID e IDN</h2>
+          <p>O CUID e o IDN merecem validacao isolada, porque esses campos funcionam como referencia de controle no fluxo. Se estiverem errados, trocados ou incompletos, o problema tende a aparecer mais adiante, quando a OS ja deveria estar pronta.</p>
+          <p>A leitura correta desses identificadores evita conflito entre clientes, evita associacao incorreta de registros e reduz retrabalho operacional nas etapas finais.</p>
+          <ul>
+            <li>Verifique se os dois codigos estao preenchidos nos campos corretos.</li>
+            <li>Confirme se eles pertencem exatamente ao cliente daquela oportunidade.</li>
+            <li>Em caso de divergencia, corrija antes de continuar para a marcacao.</li>
+          </ul>
+          <span class='detail'>Ponto critico: qualquer divergencia aqui pode comprometer a criacao correta da OS.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/3-Marcar%20o%20CUID%20e%20o%20IDN.png' alt='Marcacao do CUID e IDN'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 6</div>
+          <h2>6. Marcar o CUID e o IDN</h2>
+          <p>Depois da checagem, marque corretamente o CUID e o IDN na interface para sinalizar que a validacao foi concluida. Esse passo nao e apenas visual: ele consolida o registro para que os proximos setores confiem no cadastro.</p>
+          <p>A marcacao deve acontecer somente depois da conferencia. Marcar antes, e corrigir depois, aumenta a chance de alguém assumir que o cadastro ja estava homologado quando ainda nao estava.</p>
+          <ul>
+            <li>Marque apenas os campos que ja foram revisados e confirmados.</li>
+            <li>Garanta que a tela reflita exatamente o estado real do cadastro.</li>
+            <li>Finalize essa etapa deixando claro que o registro esta pronto para seguir.</li>
+          </ul>
+          <span class='detail'>Resultado esperado: dados identificadores salvos e confirmados no registro.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/4-Fila%20de%20OS%20financeiro.png' alt='Fila de OS no financeiro'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 7</div>
+          <h2>7. Fila de OS no financeiro</h2>
+          <p>Com o cadastro consistente, a demanda deve seguir para a fila de OS do financeiro. A partir daqui, o foco sai do preenchimento e passa para o controle de processamento da operacao.</p>
+          <p>O financeiro precisa receber uma demanda clara, validada e sem pendencias estruturais. Quanto mais limpo estiver o registro nessa entrega, menor a chance de retorno para ajuste manual.</p>
+          <ul>
+            <li>Confirme que a demanda foi efetivamente encaminhada para a fila correta.</li>
+            <li>Verifique se nao existe pendencia cadastral antes da passagem de bastao.</li>
+            <li>Use essa etapa como marco de transicao entre comercial, cadastro e operacionalizacao financeira.</li>
+          </ul>
+          <span class='detail'>Transicao: da preparacao comercial para o controle financeiro e operacional.</span>
+        </div>
+      </section>
+
+      <section class='card'>
+        <div class='frame'>
+          <img src='https://jefftspicasa-blueskies.github.io/projects/5-OS%20Criadas%20no%20Omie.png' alt='OS criadas no Omie'>
+        </div>
+        <div>
+          <div class='badge'>Etapa 8</div>
+          <h2>8. OS criadas no Omie</h2>
+          <p>Na etapa final, confirme se as ordens de servico foram realmente criadas no Omie e se estao aparecendo conforme o esperado. Essa verificacao fecha o ciclo e prova que o processo anterior foi interpretado corretamente pelo sistema.</p>
+          <p>Se a OS estiver criada, a cadeia operacional foi bem sucedida. Se nao estiver, ou se estiver com dados inconsistentes, a equipe deve retornar ao ponto em que a informacao foi comprometida.</p>
+          <ul>
+            <li>Valide a existencia da OS no Omie e a coerencia geral do registro.</li>
+            <li>Cheque se o cliente e o contexto da ordem correspondem ao que saiu do Pipedrive.</li>
+            <li>Use essa tela como confirmacao final antes de considerar o fluxo concluido.</li>
+          </ul>
+          <span class='detail'>Fechamento: OS visiveis no Omie e prontas para o proximo fluxo.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class='footer'>Tutorial reorganizado em identidade visual preta, sem audio, com orientacao textual detalhada para cada etapa do fluxo.</footer>
+</body>
+</html>
