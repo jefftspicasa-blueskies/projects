@@ -37,6 +37,31 @@
     gap:22px;
     align-items:end;
   }
+  .lang-switch{
+    display:flex;
+    justify-content:flex-end;
+    margin:0 auto 18px;
+    max-width:1240px;
+    padding:0 24px;
+  }
+  .lang-group{
+    display:inline-flex;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;
+    overflow:hidden;
+    background:rgba(255,255,255,.04);
+  }
+  .lang-btn{
+    padding:8px 14px;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:#d8d8de;
+    border-right:1px solid rgba(255,255,255,.12);
+  }
+  .lang-btn:last-child{border-right:0;}
+  .lang-btn.active{background:#ffffff;color:#000;font-weight:700;}
   .brand-row{
     display:flex;
     align-items:center;
@@ -176,6 +201,12 @@
 </head>
 <body>
   <header class='hero'>
+    <div class='lang-switch'>
+      <div class='lang-group'>
+        <a class='lang-btn active' href='tutorial_visual_pipedrive_omie.html' lang='pt-BR'>PT-BR</a>
+        <a class='lang-btn' href='tutorial_visual_pipedrive_omie_en.html' lang='en'>English</a>
+      </div>
+    </div>
     <div class='wrap hero-grid'>
       <div>
         <div class='brand-row'>
